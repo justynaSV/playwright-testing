@@ -36,7 +36,43 @@ src/fixtures/: Serves as the backbone of dependency injection. Extends Playwrigh
 
 ## 2. Naming conventions
 
-_TBD: spec file names, test titles, describe block structure._
+### File Naming & Directory Conventions
+
+#### General Rules
+
+- **Strict `kebab-case`**: Use lowercase letters separated by hyphens for all file and directory names (e.g., `user-profile.page.ts`, never `UserProfilePage.ts` or `userProfilePage.ts`). This guarantees cross-platform OS compatibility (Linux CI vs. local macOS/Windows).
+- **Functional Suffixes**: Every file must explicitly declare its architectural role using a standardized suffix before the TypeScript extension (`.spec.ts`, `.page.ts`, `.component.ts`, `.fixture.ts`, `.api.ts`).
+
+## File Naming Conventions
+
+| Category          | Name Pattern                    | Example                                | Description                                      |
+| ----------------- | ------------------------------- | -------------------------------------- | ------------------------------------------------ |
+| **E2E Tests**     | `<module>.<scenario>.spec.ts`   | `checkout.payment-credit-card.spec.ts` | UI user journeys grouped by module and scenario  |
+| **API Tests**     | `<entity>.<operation>.spec.ts`  | `users.create-account.spec.ts`         | Standalone backend endpoint test specifications  |
+| **Page Objects**  | `<page-name>.page.ts`           | `shopping-cart.page.ts`                | Encapsulates full-page locators and actions      |
+| **UI Components** | `<component-name>.component.ts` | `header-navigation.component.ts`       | Reusable UI sub-components shared across pages   |
+| **API Clients**   | `<service-name>.api.ts`         | `orders-service.api.ts`                | HTTP request controllers located in `src/api/`   |
+| **Fixtures**      | `<area>.fixture.ts`             | `authenticated-user.fixture.ts`        | Custom `test.extend()` setups in `src/fixtures/` |
+
+#### Multi-Application Directory Structure
+
+When testing multiple applications within a single repository, group test specs by application directory while maintaining flat, standardized file names:
+
+```text
+tests/
+├── e2e/
+│   ├── customer-portal/
+│   │   ├── auth.login-by-email.spec.ts
+│   │   └── checkout.stripe-payment.spec.ts
+│   └── admin-panel/
+│       ├── users.deactivate-user.spec.ts
+│       └── reports.generate-pdf.spec.ts
+└── api/
+    ├── customer-portal/
+    │   └── cart.add-item.spec.ts
+    └── admin-panel/
+        └── metrics.get-daily.spec.ts
+```
 
 ## 3. Locator strategy
 
@@ -61,3 +97,7 @@ _TBD: tag conventions for CI (e.g. `@smoke`, `@regression`), sharding/parallel r
 ## 8. CI integration
 
 _TBD: how tests run in CI, reporting, retries policy._
+
+```
+
+```

@@ -30,3 +30,11 @@ You are an expert QA Automation Lead. Always follow these rules when generating,
 
 - Write strict TypeScript. Do not use `any`.
 - Always remember the `await` keyword before actions (`click`, `fill`) and assertions (`expect`).
+
+## 6.File Naming Conventions
+
+- **ALWAYS** use `kebab-case` for file names and directory names.
+- Spec files: `<module>.<scenario>.spec.ts` (e.g., `auth.login.spec.ts`)
+- Page Objects: `<page-name>.page.ts` (e.g., `checkout.page.ts`)
+- UI Components: `<component-name>.component.ts` (e.g., `navbar.component.ts`)
+- API Helpers: `<service-name>.api.ts` (e.g., `user-service.api.ts`)
