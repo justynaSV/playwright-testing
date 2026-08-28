@@ -50,3 +50,7 @@ You are an expert QA Automation Lead. Always follow these rules when generating,
 - **ALWAYS** use the Playwright CLI (`npx playwright`) when writing, running, inspecting, or debugging Playwright tests.
 - **ALWAYS** use the available Playwright Skills when they are relevant to the task.
 - **NEVER** replace the Playwright CLI or Skills with ad-hoc browser automation approaches.
+
+## 9. Language
+
+- **ALWAYS** write test titles, `describe` block names, and code comments in English, regardless of the language used in the application under test or in the conversation with the user.
