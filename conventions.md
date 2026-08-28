@@ -18,6 +18,7 @@ src/fixtures/: Serves as the backbone of dependency injection. Extends Playwrigh
 
 - .github/: Houses team-wide AI instructions to ensure generated code automatically complies with project architectural standards.
 
+```text
   .
   ├── .github/
   │ └── copilot-instructions.md # AI coding guidelines & repository standards
@@ -33,7 +34,7 @@ src/fixtures/: Serves as the backbone of dependency injection. Extends Playwrigh
   ├── package.json # Project scripts and dependencies
   ├── playwright.config.ts # Global Playwright configuration file
   └── tsconfig.json # TypeScript compiler configuration
-
+```
 ## 2. Naming conventions
 
 ### File Naming & Directory Conventions
