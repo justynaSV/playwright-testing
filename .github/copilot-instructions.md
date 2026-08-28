@@ -38,3 +38,9 @@ You are an expert QA Automation Lead. Always follow these rules when generating,
 - Page Objects: `<page-name>.page.ts` (e.g., `checkout.page.ts`)
 - UI Components: `<component-name>.component.ts` (e.g., `navbar.component.ts`)
 - API Helpers: `<service-name>.api.ts` (e.g., `user-service.api.ts`)
+
+## 7. Test Tagging
+
+- **ALWAYS** assign at least one Playwright tag to every test.
+- Use tags such as `@smoke` for critical, fast checks and `@regression` for broader coverage.
+- Apply tags in a consistent way so tests can be selected reliably in local runs and CI.
