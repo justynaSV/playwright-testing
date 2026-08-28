@@ -76,28 +76,49 @@ tests/
 
 ## 3. Locator strategy
 
-_TBD: preferred locator priority (e.g. role/testid over CSS/XPath), rules for adding `data-testid`._
+- **Primary strategy: `getByTestId`**: Use stable, purpose-specific `data-testid` attributes as the preferred locator when available.
+- **User-facing fallback**: When a test id is unavailable, use locators in this order: `getByRole`, `getByLabel`, `getByText`, then `getByPlaceholder`.
+- **Avoid implementation details**: Do not use CSS selectors or XPath unless no stable test id or user-facing locator can represent the target.
+- **Keep locators short**: Avoid unnecessary locator chaining. Add a `data-testid` when an element cannot be identified reliably through the preferred strategies.
 
 ## 4. Page Object Model / Fixtures
 
-_TBD: whether to use POM, fixtures, or both; how shared setup is structured._
+- **Page Object Model**: Store page-level locators and interactions in `src/pages/` classes. Page Objects expose locators and perform actions, but contain no `expect()` assertions.
+- **Reusable components**: Put shared UI areas in component classes using the `.component.ts` suffix.
+- **Dependency injection**: Provide Page Objects and API clients through typed Playwright fixtures in `src/fixtures/` using `test.extend()`.
+- **Test setup**: Use API clients from `src/api/` to prepare state during the Arrange phase of E2E tests. Tests must not manually instantiate Page Objects when an appropriate fixture exists.
+- **Test responsibilities**: Keep business scenarios and assertions in `.spec.ts` files; keep selectors and low-level UI operations in Page Objects or components.
 
 ## 5. Waiting & assertions
 
-_TBD: auto-waiting expectations, avoiding hard waits, preferred assertion style (`expect` matchers)._
+- **Auto-waiting**: Rely on Playwright's built-in waiting and web-first assertions for synchronization.
+- **No arbitrary waits**: Never use `page.waitForTimeout()` or other fixed-duration sleeps.
+- **Web-first assertions**: Use awaited, auto-retrying `expect` matchers such as `toBeVisible()`, `toHaveText()`, and `toHaveURL()`.
+- **Assertion location**: Keep assertions in test specifications, not in Page Objects, components, API helpers, or fixtures.
+- **Actions**: Always await Playwright actions such as `click()` and `fill()`.
 
 ## 6. Test data & environment handling
 
-_TBD: fixtures vs inline data, environment/config handling, avoiding hardcoded secrets._
+- **State preparation**: Prefer API requests through typed clients in `src/api/` for creating users, records, and other preconditions. Use UI interactions only when the UI behavior itself is under test.
+- **Data ownership**: Keep reusable setup data and authenticated state in fixtures; keep scenario-specific values close to the test when they are not shared.
+- **Test isolation**: Each test creates or provisions the state it needs and must not depend on data left by another test.
+- **Environment configuration**: Read environment-specific settings from Playwright configuration or environment variables. Keep `.env.example` updated with required variable names and safe placeholder values.
+- **Secrets**: Never commit credentials, tokens, or other secrets, and never hardcode them in tests or Page Objects.
+- **Type safety**: Use explicit TypeScript types for test data, API payloads, and fixture values. Do not use `any`.
 
 ## 7. Tagging & parallelization
 
-_TBD: tag conventions for CI (e.g. `@smoke`, `@regression`), sharding/parallel run setup._
+- **Tags**: Use Playwright tags such as `@smoke` and `@regression` to identify suites used by CI and local development.
+- **Tag meaning**: Apply `@smoke` to a small set of critical journeys and `@regression` to broader coverage. A test may have more than one tag when both meanings apply.
+- **Isolation requirement**: Tests must be independent and safe to run in any order, in parallel, or on separate shards.
+- **Parallel execution**: Prefer parallel execution for independent tests. Avoid shared mutable accounts, records, files, or other external state unless a fixture explicitly isolates them.
+- **Sharding**: CI may distribute tests across shards; tests must not rely on execution order or a particular worker.
 
 ## 8. CI integration
 
-_TBD: how tests run in CI, reporting, retries policy._
-
-```
-
-```
+- **Test scope**: Run API tests from `tests/api/` without launching a browser and run E2E tests from `tests/e2e/` through the configured Playwright project.
+- **Selective runs**: Use tags to run the smoke suite on fast feedback paths and the regression suite on broader validation paths.
+- **Retries**: Configure retries explicitly for CI. Retries are a diagnostic safeguard, not a substitute for fixing flaky tests.
+- **Reporting**: Publish the configured Playwright report and retain traces, screenshots, and video when a test fails, according to the CI retention policy.
+- **Failure handling**: CI failures should include the failed test, assertion details, and available Playwright artifacts so the failure can be reproduced locally.
+- **Environment parity**: CI must provide all required environment variables through secret or configuration management and must not depend on committed secrets.
