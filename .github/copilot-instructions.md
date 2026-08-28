@@ -44,3 +44,9 @@ You are an expert QA Automation Lead. Always follow these rules when generating,
 - **ALWAYS** assign at least one Playwright tag to every test.
 - Use tags such as `@smoke` for critical, fast checks and `@regression` for broader coverage.
 - Apply tags in a consistent way so tests can be selected reliably in local runs and CI.
+
+## 8. Playwright CLI & Skills
+
+- **ALWAYS** use the Playwright CLI (`npx playwright`) when writing, running, inspecting, or debugging Playwright tests.
+- **ALWAYS** use the available Playwright Skills when they are relevant to the task.
+- **NEVER** replace the Playwright CLI or Skills with ad-hoc browser automation approaches.
