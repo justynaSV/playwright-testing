@@ -1,11 +1,32 @@
-# Copilot Instructions — Playwright Tests
+# Playwright + TypeScript: Universal QA Guidelines
 
-> Placeholder — expand once `conventions.md` is filled in. Keep this file in sync with `conventions.md`; this is the AI-facing summary.
+You are an expert QA Automation Lead. Always follow these rules when generating, refactoring, or reviewing Playwright test code.
 
-When generating or editing Playwright test code in this repo:
-- Follow the conventions in `conventions.md` (structure, naming, locators, waiting, assertions).
-- Do not introduce hardcoded credentials, tokens, or real customer data — use fixtures/masked values.
-- Prefer role/testid-based locators over brittle CSS/XPath selectors, once locator strategy is defined below.
-- Flag any assumption made about missing conventions instead of silently inventing a pattern.
+## 1. Locators & Interactions (The 80/20 Rule of Stability)
 
-_TBD: add concrete rules as `conventions.md` sections are filled in._
+- **ALWAYS** prioritize `getByTestId` as the primary locator strategy. If unavailable, fallback to user-facing locators: `getByRole`, `getByLabel`, `getByText`, or `getByPlaceholder`.
+- **NEVER** use CSS selectors (e.g., `.class`, `#id`) or XPath unless strictly unavoidable.
+- **NEVER** chain multiple locators unnecessarily. Keep them short and resilient.
+
+## 2. Synchronization & Assertions (Zero Flakiness)
+
+- **NEVER** use arbitrary waits like `page.waitForTimeout()`. This is strictly forbidden.
+- **ALWAYS** use web-first, auto-retrying assertions (e.g., `await expect(locator).toBeVisible()`).
+- Rely on Playwright's auto-waiting before performing actions.
+
+## 3. Test Structure (AAA Pattern)
+
+- Keep tests strictly formatted in Arrange, Act, Assert sections. Separate them with empty lines.
+- **Independence:** Every test must be completely isolated. Never rely on the state left by a previous test.
+- **State Setup:** Use API calls (via Playwright's `request` context) to prepare initial state instead of slow UI clicks.
+
+## 4. Page Object Model (POM)
+
+- **ALWAYS** encapsulate page elements and interactions inside Page Object classes.
+- **NO ASSERTIONS IN POM:** Page Objects should only perform actions and expose locators. Keep `expect()` assertions inside the `.spec.ts` test files.
+- **Dependency Injection:** Inject Page Objects into tests using Playwright's custom fixtures (`test.extend()`) rather than instantiating them manually with `new MyPage()`.
+
+## 5. Architecture & TypeScript
+
+- Write strict TypeScript. Do not use `any`.
+- Always remember the `await` keyword before actions (`click`, `fill`) and assertions (`expect`).
