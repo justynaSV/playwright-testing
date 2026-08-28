@@ -12,11 +12,12 @@
 
 - src/pages/: Holds Page Object Model classes (e.g., login.page.ts, checkout.page.ts). Encapsulates element locators and page-level interactions. Strict rule: Contains zero expect() assertions.
 
-- - src/api/: Holds API controllers and request helpers (e.g., auth.controller.ts). Used both for API testing and for ultra-fast state preparation (Arrange phase) in E2E tests.
+- src/api/: Holds API controllers and request helpers (e.g., auth.controller.ts). Used both for API testing and for ultra-fast state preparation (Arrange phase) in E2E tests.
 
 src/fixtures/: Serves as the backbone of dependency injection. Extends Playwright’s native test object via test.extend() to provide fully typed Page Objects and API clients directly into test signatures, eliminating manual new Page() instantiations.
 
 - .github/: Houses team-wide AI instructions to ensure generated code automatically complies with project architectural standards.
+
   .
   ├── .github/
   │ └── copilot-instructions.md # AI coding guidelines & repository standards
